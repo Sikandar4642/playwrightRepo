@@ -1,46 +1,13 @@
 pipeline {
-
     agent any
 
-    tools {
-        nodejs 'Node22'
-    }
-
     stages {
-
-        stage('Checkout') {
+        stage('Check Environment') {
             steps {
-                git 'https://github.com/Sikandar4642/playwrightRepo.git'
+                bat 'where node'
+                bat 'node -v'
+                bat 'npm -v'
             }
         }
-
-        stage('Install Dependencies') {
-            steps {
-                bat 'npm install'
-            }
-        }
-
-        stage('Install Browsers') {
-            steps {
-                bat 'npx playwright install'
-            }
-        }
-
-        stage('Run Tests') {
-            steps {
-                bat 'npx playwright test'
-            }
-        }
-
-        stage('Publish Report') {
-            steps {
-                publishHTML([
-                    reportDir: 'playwright-report',
-                    reportFiles: 'index.html',
-                    reportName: 'Playwright Report'
-                ])
-            }
-        }
-
     }
 }
